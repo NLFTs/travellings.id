@@ -15,10 +15,12 @@ export class Go implements OnInit {
       'https://radit.com',
       'https://sidik.site',
       'https://miftah.id'
-    ]
+    ];
 
     const randomWebsite = websites[Math.floor(Math.random() * websites.length)];
-    window.location.href = randomWebsite;
+    setTimeout(() => {
+      window.location.href = randomWebsite;
+    }, 1000);
   }
 }
 
