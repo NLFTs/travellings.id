@@ -1,0 +1,140 @@
+// Variabel Warna (Bisa disesuaikan dengan tema aplikasi Anda)
+$bg-color: #0f172a;       // Slate gelap modern
+$primary-glow: #38bdf8;   // Cyan / Sky blue
+$secondary-glow: #818cf8; // Indigo
+$text-color: #f8fafc;
+$text-muted: #64748b;
+
+.redirect-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: $bg-color;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.loader-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+// --- ANIMASI SPINNER ---
+.glow-spinner {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 30%, $primary-glow, $secondary-glow);
+  animation: rotateSpinner 1.5s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba($primary-glow, 0.2),
+              inset 0 0 20px rgba($secondary-glow, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 30%, $primary-glow, $secondary-glow);
+    filter: blur(12px);
+    opacity: 0.7;
+  }
+
+  .inner-circle {
+    position: absolute;
+    width: 104px;
+    height: 104px;
+    background: $bg-color;
+    border-radius: 50%;
+    z-index: 2;
+  }
+}
+
+// --- ANIMASI TEKS STAGGERED ---
+.loading-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $text-color;
+  letter-spacing: 0.15rem;
+  display: flex;
+  justify-content: center;
+
+  span {
+    display: inline-block;
+    animation: wave 1.2s ease-in-out infinite;
+
+    // Loop SCSS untuk memberikan delay per huruf agar efeknya mengalir
+    @for $i from 1 through 11 {
+      &:nth-child(#{$i}) {
+        animation-delay: $i * 0.06s;
+      }
+    }
+  }
+
+  .dots {
+    animation: blink 1.4s infinite both;
+    animation-delay: 0.8s;
+  }
+}
+
+.sub-text {
+  color: $text-muted;
+  font-size: 0.95rem;
+  margin: 0;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+/* Animasi exit: redupkan dan geser kontainer sebelum redirect */
+.redirect-container.exiting {
+  animation: exitFade 700ms ease-in-out forwards;
+}
+
+@keyframes exitFade {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-18px) scale(0.98); }
+}
+
+// --- KEYFRAMES ---
+@keyframes rotateSpinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0);
+    color: $text-color;
+  }
+  50% {
+    transform: translateY(-8px);
+    color: $primary-glow;
+    text-shadow: 0 0 10px rgba($primary-glow, 0.5);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 02; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
